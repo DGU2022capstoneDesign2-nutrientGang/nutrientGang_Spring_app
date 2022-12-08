@@ -26,10 +26,12 @@ public class RecommendRestaurantService {
             throw new BaseException(NOT_FOUND_MENU);
         }
         List<RestaurantDto> restaurantDtoList = new ArrayList<>();
+        int i = 0;
         for(Restaurant r : restaurant){
             List<MenuDto> menu = restaurantRepository.findMenuByRestaurant(r.getId());
-            RestaurantDto restaurantDto = new RestaurantDto(r.getName(),r.getPicture(),r.getLocation(),r.getLatitude(),r.getLongitude(),menu);
+            RestaurantDto restaurantDto = new RestaurantDto(i,r.getName(),r.getPicture(),r.getLocation(),r.getLatitude(),r.getLongitude(),menu);
             restaurantDtoList.add(restaurantDto);
+            i++;
         }
         return RestaurantListDto.builder().
                 restaurantDtoList(restaurantDtoList)
