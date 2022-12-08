@@ -3,7 +3,6 @@ package com.dev.recommend.service;
 
 import com.dev.health.dto.*;
 import com.dev.health.entity.HealthStatus;
-import com.dev.health.entity.Target;
 import com.dev.health.repository.HealthStatusRepository;
 import com.dev.health.repository.NutrientStatusRepository;
 import com.dev.jwt.utils.SecurityUtil;

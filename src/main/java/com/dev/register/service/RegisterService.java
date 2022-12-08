@@ -62,6 +62,7 @@ public class RegisterService {
                    breakfast.setXmains(food.getXmain());
                    breakfast.setYmains(food.getYmain());
                    breakfast.setMenu(food.getName());
+                   breakfast.setCalories(food.getCalorie());
                    nutrientStatus.addCalorie(food.getCalorie());
                    nutrientStatus.addCarbohydrate(food.getNutrient().getCarbohydrate());
                    nutrientStatus.addProtein(food.getNutrient().getProtein());
@@ -79,6 +80,7 @@ public class RegisterService {
                 lunch.setXmains(food.getXmain());
                 lunch.setYmains(food.getYmain());
                 lunch.setMenu(food.getName());
+                lunch.setCalories(food.getCalorie());
                 nutrientStatus.addCalorie(food.getCalorie());
                 nutrientStatus.addCarbohydrate(food.getNutrient().getCarbohydrate());
                 nutrientStatus.addProtein(food.getNutrient().getProtein());
@@ -96,6 +98,7 @@ public class RegisterService {
                 dinner.setXmains(food.getXmain());
                 dinner.setYmains(food.getYmain());
                 dinner.setMenu(food.getName());
+                dinner.setCalories(food.getCalorie());
                 nutrientStatus.addCalorie(food.getCalorie());
                 nutrientStatus.addCarbohydrate(food.getNutrient().getCarbohydrate());
                 nutrientStatus.addProtein(food.getNutrient().getProtein());
@@ -249,11 +252,7 @@ public class RegisterService {
     public MealRegisterResDto updateMealInfo(Long mealId,String mealType,MealRegisterReqDto updateMealInfoReqDto){
         Long userId = SecurityUtil.getCurrentMemberId();
         LocalDate date = updateMealInfoReqDto.getDate();
-        Optional<NutrientStatus> findNutrientStatus = nutrientStatusRepository.findByMemberAndDate(userId, date);
-        if (findNutrientStatus.isEmpty()){
-            throw new BaseException(BaseResponseStatus.NOT_FOUND_NUTRIENT_STATUS);
-        }
-        NutrientStatus nutrientStatus = findNutrientStatus.get();
+
 
         if (mealType.equals("아침")){
             Optional<Breakfast> findMealInfo = breakfastRepository.findById(mealId);
@@ -262,6 +261,12 @@ public class RegisterService {
             }
             Breakfast mealInfo = findMealInfo.get();
             List<String> menus = mealInfo.getMenu();
+
+            Optional<NutrientStatus> findNutrientStatus = nutrientStatusRepository.findByMemberAndDate(userId, date);
+            if (findNutrientStatus.isEmpty()){
+                throw new BaseException(BaseResponseStatus.NOT_FOUND_NUTRIENT_STATUS);
+            }
+            NutrientStatus nutrientStatus = findNutrientStatus.get();
 
             for (String menu: menus){
                 Optional<Food> findFood = foodRepository.findByName(menu);
@@ -287,6 +292,12 @@ public class RegisterService {
             Lunch mealInfo = findMealInfo.get();
             List<String> menus = mealInfo.getMenu();
 
+            Optional<NutrientStatus> findNutrientStatus = nutrientStatusRepository.findByMemberAndDate(userId, date);
+            if (findNutrientStatus.isEmpty()){
+                throw new BaseException(BaseResponseStatus.NOT_FOUND_NUTRIENT_STATUS);
+            }
+            NutrientStatus nutrientStatus = findNutrientStatus.get();
+
             for (String menu: menus){
                 Optional<Food> findFood = foodRepository.findByName(menu);
                 if (findFood.isEmpty()){
@@ -310,6 +321,12 @@ public class RegisterService {
 
             Dinner mealInfo = findMealInfo.get();
             List<String> menus = mealInfo.getMenu();
+
+            Optional<NutrientStatus> findNutrientStatus = nutrientStatusRepository.findByMemberAndDate(userId, date);
+            if (findNutrientStatus.isEmpty()){
+                throw new BaseException(BaseResponseStatus.NOT_FOUND_NUTRIENT_STATUS);
+            }
+            NutrientStatus nutrientStatus = findNutrientStatus.get();
 
             for (String menu: menus){
                 Optional<Food> findFood = foodRepository.findByName(menu);
@@ -421,7 +438,6 @@ public class RegisterService {
             nutrientStatusRepository.save(nutrientStatus);
             dinnerRepository.delete(mealInfo);
         }
-
         return MealRegisterResDto.builder()
                 .username(member.getUsername())
                 .meal(mealType)

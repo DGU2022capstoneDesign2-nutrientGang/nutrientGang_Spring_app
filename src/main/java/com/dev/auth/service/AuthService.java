@@ -124,7 +124,11 @@ public class AuthService {
         RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());
         refreshTokenRepository.save(newRefreshToken);
 
+        long userId = Long.parseLong(authentication.getName());
+        String username = memberRepository.findById(userId).get().getUsername();
+
         return ReissueResDto.builder()
+                .username(username)
                 .tokenDto(tokenDto)
                 .build();
 

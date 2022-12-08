@@ -7,5 +7,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ReissueResDto {
+    private String username;
     private TokenDto tokenDto;
 }

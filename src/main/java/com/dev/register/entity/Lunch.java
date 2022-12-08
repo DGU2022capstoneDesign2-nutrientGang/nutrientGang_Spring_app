@@ -39,9 +39,18 @@ public class Lunch {
     @Column
     private List<String> ymains = new ArrayList<>();
 
+    @Convert(converter = StringArrayConverter.class)
+    @Column
+    private List<String> calories = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
     private Member member;
+
+    public void setCalories(Integer calorie){
+        String stringCalorie = String.valueOf(calorie);
+        this.calories.add(stringCalorie);
+    }
 
     public void setMenu(String menu){
         this.menu.add(menu);

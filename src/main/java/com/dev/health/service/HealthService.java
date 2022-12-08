@@ -107,7 +107,11 @@ public class HealthService {
         List<Breakfast> breakfastList = breakfastRepository.findByMemberAndDate(userId, date);
         List<Lunch> lunchList = lunchRepository.findByMemberAndDate(userId, date);
         List<Dinner> dinnerList = dinnerRepository.findByMemberAndDate(userId, date);
-        Integer eachNeedCalorie = healthStatusRepository.findNeedCalorieByMemberAndDate(userId, date) / 3;
+        Integer findEachNeedCalorie = healthStatusRepository.findNeedCalorieByMemberAndDate(userId, date);
+        if (findEachNeedCalorie == null){
+            throw new BaseException(BaseResponseStatus.NOT_FOUND_HEALTH_STATUS);
+        }
+        int eachNeedCalorie = findEachNeedCalorie.intValue();
         intakeMealInfoResDto.setEachNeedCalorie(eachNeedCalorie);
 
         double breakfastCalorie = 0;
@@ -117,20 +121,15 @@ public class HealthService {
         for (Breakfast breakfast : breakfastList) {
             String imgUrl = breakfast.getImgUrl();
             List<String> menus = breakfast.getMenu();
-            double calorie = 0;
-            for (String menu : menus) {
-                Optional<Food> findFood = foodRepository.findByName(menu);
-                if (findFood.isEmpty()) {
-                    throw new BaseException(BaseResponseStatus.NOT_FOUND_FOOD);
-                }
-                Food food = findFood.get();
-                calorie += food.getCalorie();
-            }
+            int calorie = breakfast.getCalories()
+                    .stream()
+                    .mapToInt(Integer::parseInt)
+                    .sum();
             MealInfoDto mealInfoDto = MealInfoDto.builder()
                     .mealId(breakfast.getId())
                     .names(menus)
                     .imgUrl(imgUrl)
-                    .calorie((int) calorie)
+                    .calorie(calorie)
                     .build();
             intakeMealInfoResDto.setBreakfast(mealInfoDto);
             breakfastCalorie += calorie;
@@ -139,20 +138,15 @@ public class HealthService {
         for (Lunch lunch : lunchList) {
             String imgUrl = lunch.getImgUrl();
             List<String> menus = lunch.getMenu();
-            double calorie = 0;
-            for (String menu : menus) {
-                Optional<Food> findFood = foodRepository.findByName(menu);
-                if (findFood.isEmpty()) {
-                    throw new BaseException(BaseResponseStatus.NOT_FOUND_FOOD);
-                }
-                Food food = findFood.get();
-                calorie += food.getCalorie();
-            }
+            int calorie = lunch.getCalories()
+                    .stream()
+                    .mapToInt(Integer::parseInt)
+                    .sum();
             MealInfoDto mealInfoDto = MealInfoDto.builder()
                     .mealId(lunch.getId())
                     .names(menus)
                     .imgUrl(imgUrl)
-                    .calorie((int) calorie)
+                    .calorie(calorie)
                     .build();
             intakeMealInfoResDto.setLunch(mealInfoDto);
             lunchCalorie += calorie;
@@ -162,20 +156,15 @@ public class HealthService {
         for (Dinner dinner : dinnerList) {
             String imgUrl = dinner.getImgUrl();
             List<String> menus = dinner.getMenu();
-            double calorie = 0;
-            for (String menu : menus) {
-                Optional<Food> findFood = foodRepository.findByName(menu);
-                if (findFood.isEmpty()) {
-                    throw new BaseException(BaseResponseStatus.NOT_FOUND_FOOD);
-                }
-                Food food = findFood.get();
-                calorie += food.getCalorie();
-            }
+            int calorie = dinner.getCalories()
+                    .stream()
+                    .mapToInt(Integer::parseInt)
+                    .sum();
             MealInfoDto mealInfoDto = MealInfoDto.builder()
                     .mealId(dinner.getId())
                     .names(menus)
                     .imgUrl(imgUrl)
-                    .calorie((int) calorie)
+                    .calorie(calorie)
                     .build();
             intakeMealInfoResDto.setDinner(mealInfoDto);
             dinnerCalorie += calorie;
@@ -238,12 +227,12 @@ public class HealthService {
         }
 
 
-            return WeightReportResDto.builder()
-                    .maxWeight(maxWeight)
-                    .minWeight(minWeight)
-                    .todayWeight(todayHealthStatus.get().getWeight())
-                    .weightInfoList(allWeightInfo)
-                    .build();
+        return WeightReportResDto.builder()
+                .maxWeight(maxWeight)
+                .minWeight(minWeight)
+                .todayWeight(todayHealthStatus.get().getWeight())
+                .weightInfoList(allWeightInfo)
+                .build();
 
     }
 
@@ -489,11 +478,7 @@ public class HealthService {
         }
         int wholeNutrient = carbohydrateSum + proteinSum + fatSum;
         if (wholeNutrient == 0) {
-            return NutrientWeekPortionDto.builder()
-                    .carbohydratePortion(0.00)
-                    .proteinPortion(0.00)
-                    .fatPortion(0.00)
-                    .build();
+            throw new BaseException(BaseResponseStatus.NOT_FOUND_INTAKE);
         }
         double carbohydratePortion = (double) carbohydrateSum / wholeNutrient;
         double proteinPortion = (double) proteinSum / wholeNutrient;
