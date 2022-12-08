@@ -34,6 +34,7 @@ public enum BaseResponseStatus {
     NOT_FOUND_FOOD(false,2016,"음식정보를 찾을 수 없습니다."),
     NOT_FOUND_INTAKE(false,2017,"식사 기록을 찾을 수 없습니다."),
     NOT_FOUND_MENU(false,2018,"음식점을 찾을 수 없습니다."),
+    ZERO_DATA_INFO(false,2019,"데이터가 0입니다."),
 
 
     /**

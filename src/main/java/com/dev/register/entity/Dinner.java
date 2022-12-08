@@ -42,6 +42,18 @@ public class Dinner {
     @Column
     private List<String> calories = new ArrayList<>();
 
+    @Convert(converter = StringArrayConverter.class)
+    @Column
+    private List<String> carbohydrates = new ArrayList<>();
+
+    @Convert(converter = StringArrayConverter.class)
+    @Column
+    private List<String> proteins = new ArrayList<>();
+
+    @Convert(converter = StringArrayConverter.class)
+    @Column
+    private List<String> fats = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
     private Member member;
@@ -51,6 +63,23 @@ public class Dinner {
         String stringCalorie = String.valueOf(calorie);
         this.calories.add(stringCalorie);
     }
+
+
+    public void setCarbohydrates(Integer carbohydrate){
+        String stringCarbohydrate = String.valueOf(carbohydrate);
+        this.carbohydrates.add(stringCarbohydrate);
+    }
+
+    public void setProteins(Integer protein){
+        String stringProtein = String.valueOf(protein);
+        this.proteins.add(stringProtein);
+    }
+
+    public void setFats(Integer fat){
+        String stringFat = String.valueOf(fat);
+        this.fats.add(stringFat);
+    }
+
 
     public void setMenu(String menu){
         this.menu.add(menu);

@@ -362,11 +362,7 @@ public class HealthService {
         }
         int sumCount = breakfastCount + lunchCount + dinnerCount;
         if (sumCount == 0) {
-            return MealPortionResDto.builder()
-                    .breakfast(0.00)
-                    .lunch(0.00)
-                    .dinner(0.00)
-                    .build();
+            throw new BaseException(BaseResponseStatus.ZERO_DATA_INFO);
         }
         return MealPortionResDto.builder()
                 .breakfast((double) breakfastCount / sumCount)

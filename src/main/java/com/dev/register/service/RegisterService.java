@@ -63,6 +63,9 @@ public class RegisterService {
                    breakfast.setYmains(food.getYmain());
                    breakfast.setMenu(food.getName());
                    breakfast.setCalories(food.getCalorie());
+                   breakfast.setCarbohydrates(food.getNutrient().getCarbohydrate());
+                   breakfast.setProteins(food.getNutrient().getProtein());
+                   breakfast.setFats(food.getNutrient().getFat());
                    nutrientStatus.addCalorie(food.getCalorie());
                    nutrientStatus.addCarbohydrate(food.getNutrient().getCarbohydrate());
                    nutrientStatus.addProtein(food.getNutrient().getProtein());
@@ -81,6 +84,9 @@ public class RegisterService {
                 lunch.setYmains(food.getYmain());
                 lunch.setMenu(food.getName());
                 lunch.setCalories(food.getCalorie());
+                lunch.setCarbohydrates(food.getNutrient().getCarbohydrate());
+                lunch.setProteins(food.getNutrient().getProtein());
+                lunch.setFats(food.getNutrient().getFat());
                 nutrientStatus.addCalorie(food.getCalorie());
                 nutrientStatus.addCarbohydrate(food.getNutrient().getCarbohydrate());
                 nutrientStatus.addProtein(food.getNutrient().getProtein());
@@ -99,6 +105,9 @@ public class RegisterService {
                 dinner.setYmains(food.getYmain());
                 dinner.setMenu(food.getName());
                 dinner.setCalories(food.getCalorie());
+                dinner.setCarbohydrates(food.getNutrient().getCarbohydrate());
+                dinner.setProteins(food.getNutrient().getProtein());
+                dinner.setFats(food.getNutrient().getFat());
                 nutrientStatus.addCalorie(food.getCalorie());
                 nutrientStatus.addCarbohydrate(food.getNutrient().getCarbohydrate());
                 nutrientStatus.addProtein(food.getNutrient().getProtein());
@@ -260,7 +269,10 @@ public class RegisterService {
                 throw new BaseException(BaseResponseStatus.NOT_FOUND_INTAKE);
             }
             Breakfast mealInfo = findMealInfo.get();
-            List<String> menus = mealInfo.getMenu();
+            List<String> calories = mealInfo.getCalories();
+            List<String> carbohydrates = mealInfo.getCarbohydrates();
+            List<String> proteins = mealInfo.getProteins();
+            List<String> fats = mealInfo.getFats();
 
             Optional<NutrientStatus> findNutrientStatus = nutrientStatusRepository.findByMemberAndDate(userId, date);
             if (findNutrientStatus.isEmpty()){
@@ -268,17 +280,19 @@ public class RegisterService {
             }
             NutrientStatus nutrientStatus = findNutrientStatus.get();
 
-            for (String menu: menus){
-                Optional<Food> findFood = foodRepository.findByName(menu);
-                if (findFood.isEmpty()){
-                    throw new BaseException(BaseResponseStatus.NOT_FOUND_FOOD);
-                }
-                Food food = findFood.get();
-                nutrientStatus.subCalorie((int)food.getCalorie());
-                nutrientStatus.subCarbohydrate((int)food.getCarbohydrate());
-                nutrientStatus.subProtein((int)food.getProtein());
-                nutrientStatus.subFat((int)food.getFat());
+            for(String calorie : calories){
+                nutrientStatus.subCalorie(Integer.parseInt(calorie));
             }
+            for(String carbohydrate : carbohydrates){
+                nutrientStatus.subCarbohydrate(Integer.parseInt(carbohydrate));
+            }
+            for(String protein : proteins){
+                nutrientStatus.subProtein(Integer.parseInt(protein));
+            }
+            for(String fat: fats){
+                nutrientStatus.subFat(Integer.parseInt(fat));
+            }
+
             nutrientStatusRepository.save(nutrientStatus);
             breakfastRepository.delete(mealInfo);
         }
@@ -290,7 +304,10 @@ public class RegisterService {
             }
 
             Lunch mealInfo = findMealInfo.get();
-            List<String> menus = mealInfo.getMenu();
+            List<String> calories = mealInfo.getCalories();
+            List<String> carbohydrates = mealInfo.getCarbohydrates();
+            List<String> proteins = mealInfo.getProteins();
+            List<String> fats = mealInfo.getFats();
 
             Optional<NutrientStatus> findNutrientStatus = nutrientStatusRepository.findByMemberAndDate(userId, date);
             if (findNutrientStatus.isEmpty()){
@@ -298,16 +315,17 @@ public class RegisterService {
             }
             NutrientStatus nutrientStatus = findNutrientStatus.get();
 
-            for (String menu: menus){
-                Optional<Food> findFood = foodRepository.findByName(menu);
-                if (findFood.isEmpty()){
-                    throw new BaseException(BaseResponseStatus.NOT_FOUND_FOOD);
-                }
-                Food food = findFood.get();
-                nutrientStatus.subCalorie((int)food.getCalorie());
-                nutrientStatus.subCarbohydrate((int)food.getCarbohydrate());
-                nutrientStatus.subProtein((int)food.getProtein());
-                nutrientStatus.subFat((int)food.getFat());
+            for(String calorie : calories){
+                nutrientStatus.subCalorie(Integer.parseInt(calorie));
+            }
+            for(String carbohydrate : carbohydrates){
+                nutrientStatus.subCarbohydrate(Integer.parseInt(carbohydrate));
+            }
+            for(String protein : proteins){
+                nutrientStatus.subProtein(Integer.parseInt(protein));
+            }
+            for(String fat: fats){
+                nutrientStatus.subFat(Integer.parseInt(fat));
             }
             nutrientStatusRepository.save(nutrientStatus);
             lunchRepository.delete(mealInfo);
@@ -320,7 +338,10 @@ public class RegisterService {
             }
 
             Dinner mealInfo = findMealInfo.get();
-            List<String> menus = mealInfo.getMenu();
+            List<String> calories = mealInfo.getCalories();
+            List<String> carbohydrates = mealInfo.getCarbohydrates();
+            List<String> proteins = mealInfo.getProteins();
+            List<String> fats = mealInfo.getFats();
 
             Optional<NutrientStatus> findNutrientStatus = nutrientStatusRepository.findByMemberAndDate(userId, date);
             if (findNutrientStatus.isEmpty()){
@@ -328,16 +349,17 @@ public class RegisterService {
             }
             NutrientStatus nutrientStatus = findNutrientStatus.get();
 
-            for (String menu: menus){
-                Optional<Food> findFood = foodRepository.findByName(menu);
-                if (findFood.isEmpty()){
-                    throw new BaseException(BaseResponseStatus.NOT_FOUND_FOOD);
-                }
-                Food food = findFood.get();
-                nutrientStatus.subCalorie((int)food.getCalorie());
-                nutrientStatus.subCarbohydrate((int)food.getCarbohydrate());
-                nutrientStatus.subProtein((int)food.getProtein());
-                nutrientStatus.subFat((int)food.getFat());
+            for(String calorie : calories){
+                nutrientStatus.subCalorie(Integer.parseInt(calorie));
+            }
+            for(String carbohydrate : carbohydrates){
+                nutrientStatus.subCarbohydrate(Integer.parseInt(carbohydrate));
+            }
+            for(String protein : proteins){
+                nutrientStatus.subProtein(Integer.parseInt(protein));
+            }
+            for(String fat: fats){
+                nutrientStatus.subFat(Integer.parseInt(fat));
             }
             nutrientStatusRepository.save(nutrientStatus);
             dinnerRepository.delete(mealInfo);
@@ -364,18 +386,22 @@ public class RegisterService {
                 throw new BaseException(BaseResponseStatus.NOT_FOUND_NUTRIENT_STATUS);
             }
             NutrientStatus nutrientStatus = findNutrientStatus.get();
-            List<String> menus = mealInfo.getMenu();
+            List<String> calories = mealInfo.getCalories();
+            List<String> carbohydrates = mealInfo.getCarbohydrates();
+            List<String> proteins = mealInfo.getProteins();
+            List<String> fats = mealInfo.getFats();
 
-            for (String menu : menus) {
-                Optional<Food> findFood = foodRepository.findByName(menu);
-                if (findFood.isEmpty()){
-                    throw new BaseException(BaseResponseStatus.NOT_FOUND_FOOD);
-                }
-                Food food = findFood.get();
-                nutrientStatus.subCalorie((int)food.getCalorie());
-                nutrientStatus.subCarbohydrate((int)food.getCarbohydrate());
-                nutrientStatus.subProtein((int)food.getProtein());
-                nutrientStatus.subFat((int)food.getFat());
+            for(String calorie : calories){
+                nutrientStatus.subCalorie(Integer.parseInt(calorie));
+            }
+            for(String carbohydrate : carbohydrates){
+                nutrientStatus.subCarbohydrate(Integer.parseInt(carbohydrate));
+            }
+            for(String protein : proteins){
+                nutrientStatus.subProtein(Integer.parseInt(protein));
+            }
+            for(String fat: fats){
+                nutrientStatus.subFat(Integer.parseInt(fat));
             }
             nutrientStatusRepository.save(nutrientStatus);
             breakfastRepository.delete(mealInfo);
@@ -393,18 +419,22 @@ public class RegisterService {
                 throw new BaseException(BaseResponseStatus.NOT_FOUND_NUTRIENT_STATUS);
             }
             NutrientStatus nutrientStatus = findNutrientStatus.get();
-            List<String> menus = mealInfo.getMenu();
+            List<String> calories = mealInfo.getCalories();
+            List<String> carbohydrates = mealInfo.getCarbohydrates();
+            List<String> proteins = mealInfo.getProteins();
+            List<String> fats = mealInfo.getFats();
 
-            for (String menu : menus) {
-                Optional<Food> findFood = foodRepository.findByName(menu);
-                if (findFood.isEmpty()){
-                    throw new BaseException(BaseResponseStatus.NOT_FOUND_FOOD);
-                }
-                Food food = findFood.get();
-                nutrientStatus.subCalorie((int)food.getCalorie());
-                nutrientStatus.subCarbohydrate((int)food.getCarbohydrate());
-                nutrientStatus.subProtein((int)food.getProtein());
-                nutrientStatus.subFat((int)food.getFat());
+            for(String calorie : calories){
+                nutrientStatus.subCalorie(Integer.parseInt(calorie));
+            }
+            for(String carbohydrate : carbohydrates){
+                nutrientStatus.subCarbohydrate(Integer.parseInt(carbohydrate));
+            }
+            for(String protein : proteins){
+                nutrientStatus.subProtein(Integer.parseInt(protein));
+            }
+            for(String fat: fats){
+                nutrientStatus.subFat(Integer.parseInt(fat));
             }
             nutrientStatusRepository.save(nutrientStatus);
             lunchRepository.delete(mealInfo);
@@ -422,18 +452,22 @@ public class RegisterService {
                 throw new BaseException(BaseResponseStatus.NOT_FOUND_NUTRIENT_STATUS);
             }
             NutrientStatus nutrientStatus = findNutrientStatus.get();
-            List<String> menus = mealInfo.getMenu();
+            List<String> calories = mealInfo.getCalories();
+            List<String> carbohydrates = mealInfo.getCarbohydrates();
+            List<String> proteins = mealInfo.getProteins();
+            List<String> fats = mealInfo.getFats();
 
-            for (String menu : menus) {
-                Optional<Food> findFood = foodRepository.findByName(menu);
-                if (findFood.isEmpty()){
-                    throw new BaseException(BaseResponseStatus.NOT_FOUND_FOOD);
-                }
-                Food food = findFood.get();
-                nutrientStatus.subCalorie((int)food.getCalorie());
-                nutrientStatus.subCarbohydrate((int)food.getCarbohydrate());
-                nutrientStatus.subProtein((int)food.getProtein());
-                nutrientStatus.subFat((int)food.getFat());
+            for(String calorie : calories){
+                nutrientStatus.subCalorie(Integer.parseInt(calorie));
+            }
+            for(String carbohydrate : carbohydrates){
+                nutrientStatus.subCarbohydrate(Integer.parseInt(carbohydrate));
+            }
+            for(String protein : proteins){
+                nutrientStatus.subProtein(Integer.parseInt(protein));
+            }
+            for(String fat: fats){
+                nutrientStatus.subFat(Integer.parseInt(fat));
             }
             nutrientStatusRepository.save(nutrientStatus);
             dinnerRepository.delete(mealInfo);
