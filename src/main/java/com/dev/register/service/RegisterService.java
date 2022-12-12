@@ -260,7 +260,7 @@ public class RegisterService {
     @Transactional
     public MealRegisterResDto updateMealInfo(Long mealId,String mealType,MealRegisterReqDto updateMealInfoReqDto){
         Long userId = SecurityUtil.getCurrentMemberId();
-        LocalDate date = updateMealInfoReqDto.getDate();
+//        LocalDate date = updateMealInfoReqDto.getDate();
 
 
         if (mealType.equals("아침")){
@@ -269,12 +269,13 @@ public class RegisterService {
                 throw new BaseException(BaseResponseStatus.NOT_FOUND_INTAKE);
             }
             Breakfast mealInfo = findMealInfo.get();
+            LocalDate originDate = mealInfo.getDate();
             List<String> calories = mealInfo.getCalories();
             List<String> carbohydrates = mealInfo.getCarbohydrates();
             List<String> proteins = mealInfo.getProteins();
             List<String> fats = mealInfo.getFats();
 
-            Optional<NutrientStatus> findNutrientStatus = nutrientStatusRepository.findByMemberAndDate(userId, date);
+            Optional<NutrientStatus> findNutrientStatus = nutrientStatusRepository.findByMemberAndDate(userId, originDate);
             if (findNutrientStatus.isEmpty()){
                 throw new BaseException(BaseResponseStatus.NOT_FOUND_NUTRIENT_STATUS);
             }
@@ -304,12 +305,13 @@ public class RegisterService {
             }
 
             Lunch mealInfo = findMealInfo.get();
+            LocalDate originDate = mealInfo.getDate();
             List<String> calories = mealInfo.getCalories();
             List<String> carbohydrates = mealInfo.getCarbohydrates();
             List<String> proteins = mealInfo.getProteins();
             List<String> fats = mealInfo.getFats();
 
-            Optional<NutrientStatus> findNutrientStatus = nutrientStatusRepository.findByMemberAndDate(userId, date);
+            Optional<NutrientStatus> findNutrientStatus = nutrientStatusRepository.findByMemberAndDate(userId, originDate);
             if (findNutrientStatus.isEmpty()){
                 throw new BaseException(BaseResponseStatus.NOT_FOUND_NUTRIENT_STATUS);
             }
@@ -338,12 +340,13 @@ public class RegisterService {
             }
 
             Dinner mealInfo = findMealInfo.get();
+            LocalDate originDate = mealInfo.getDate();
             List<String> calories = mealInfo.getCalories();
             List<String> carbohydrates = mealInfo.getCarbohydrates();
             List<String> proteins = mealInfo.getProteins();
             List<String> fats = mealInfo.getFats();
 
-            Optional<NutrientStatus> findNutrientStatus = nutrientStatusRepository.findByMemberAndDate(userId, date);
+            Optional<NutrientStatus> findNutrientStatus = nutrientStatusRepository.findByMemberAndDate(userId, originDate);
             if (findNutrientStatus.isEmpty()){
                 throw new BaseException(BaseResponseStatus.NOT_FOUND_NUTRIENT_STATUS);
             }

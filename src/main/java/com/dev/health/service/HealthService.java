@@ -111,7 +111,7 @@ public class HealthService {
         if (findEachNeedCalorie == null){
             throw new BaseException(BaseResponseStatus.NOT_FOUND_HEALTH_STATUS);
         }
-        int eachNeedCalorie = findEachNeedCalorie.intValue();
+        int eachNeedCalorie = findEachNeedCalorie / 3;
         intakeMealInfoResDto.setEachNeedCalorie(eachNeedCalorie);
 
         double breakfastCalorie = 0;
